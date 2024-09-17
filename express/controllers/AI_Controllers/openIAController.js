@@ -1,27 +1,37 @@
-import OpenAI from 'openai';
+import Groq from "groq-sdk";
 import dotenv from 'dotenv'; // Loads .env file contents into process.env
 dotenv.config();
 
-const client = new OpenAI({
-    apiKey: process.env.GROQ_API_KEY,
-    baseURL: "https://api.groq.com/openai/v1"
+const groq = new Groq({
+    apiKey: process.env.GROQ_API_KEY
 });
 
-const askQuestion = async (req, res) => {
-    const { userContent } = req.body;
-    const systemPrompt = `You are a team coach.`;
-    const chatCompletion = await client.chat.completions.create({
-        model: "llama-3.1-70b-versatile",
-        messages: [
-            { role: 'system', content: systemPrompt },
-            { role: "user", content: userContent }
-        ],
-        temperature: 0.5,
-        max_tokens: 128,
-    })
 
+export const chat = async (req, res) => {
+
+    const { userContent } = req.body;
+
+    if (!userContent) return res.status(400).json({ message: "No user content recieved" });
+   
+    const systemContent = `You are a great recipe master. 
+                           Prepare a recipe using giving ingredients from user.
+                           Please give me the recipe name, ingredients, instructions, cooking time, and serve.`;
+
+    const chatCompletion = await groq.chat.completions.create({
+        messages: [
+            { role: "system", content: systemContent },
+            { role: "user", content: userContent, },
+        ],
+
+        response_format: { "type": "text" },
+        model: "mixtral-8x7b-32768",
+
+    });
+   
     res.json({ message: chatCompletion.choices[0]?.message?.content || "" })
 }
 
-export default { askQuestion }
 
+
+
+export default { chat }

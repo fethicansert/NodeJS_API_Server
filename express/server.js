@@ -25,7 +25,6 @@ const PORT = process.env.PORT || 3166;
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-
 dotenv.config(); //Loads `.env` file contents into process.env.
 
 // connectDB(); //Connects server to MongoDB
@@ -76,7 +75,7 @@ app.use('/groqAI', groqAIRouter)
 
 // app.use(errorHandler);
 
-app.listen(PORT, '192.168.3.91', () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, '127.0.0.1', () => console.log(`Server running on port ${PORT}`));
 
 
 

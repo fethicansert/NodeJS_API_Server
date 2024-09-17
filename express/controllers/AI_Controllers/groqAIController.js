@@ -74,6 +74,7 @@ export const chat = async (req, res) => {
     const systemContent = `You are greate chef who creates recipes.
                            The user will enter food ingredients seperated with commas.
                            You will use these ingredients and create a recipe.
+                           Give max 4 ingredients.
                            Output must in JSON using the schema defined here:${jsonSchema}`;
 
     const chatCompletion = await groq.chat.completions.create({
@@ -82,12 +83,14 @@ export const chat = async (req, res) => {
             { role: "user", content: userContent, },
         ],
 
+        // response_format: { "type": "text" },
         response_format: { "type": "json_object" },
+        
         model: "mixtral-8x7b-32768",
 
     });
     const parsedMessage = JSON.parse(chatCompletion.choices[0]?.message?.content);
-    res.json({ message: chatCompletion.choices[0]?.message?.content || "" })
+    res.json({ message: parsedMessage || "" })
 }
 
 
