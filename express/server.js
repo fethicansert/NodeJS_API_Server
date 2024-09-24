@@ -11,25 +11,33 @@ import notFoundHandler from './middleware/notFoundHandler.js';
 import verifyJWT from './middleware/veriyfJWT.js';
 import cookieParser from 'cookie-parser';
 import connectDB from './config/dbConn.js';
-import registerRouter from './routes/register.js'
-import root from './routes/root.js'
-import openAIRouter from './routes/api/openAI.js'
-import groqAIRouter from './routes/api/groqAI.js'
+import registerRouter from './routes/register.js';
+import root from './routes/root.js';
 
+import openAIRouter from './routes/api/openAI.js';
+import groqAIRouter from './routes/api/groqAI.js';
 
-//Creates express application
+import createMySqlConnection from './config/mySqlConn.js';
+import mySqlRegisterRouter from './routes/mysql/mySqlRegisterRouter.js';
+import mySqlAuthRouter from './routes/mysql/mySqlAuthRouter.js';
+import mySqlLogutRouter from './routes/mysql/mySqlLogutRouter.js';
+import mySqlIngredientsRouter from './routes/mysql/mySqlIngredientsRouter.js';
+import mySqlIngredientTypesRouter from './routes/mysql/mySqlIngredietnTypesRouter.js'
+
 const app = express();
 
-//
+
 const PORT = process.env.PORT || 3166;
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config(); //Loads `.env` file contents into process.env.
 
+createMySqlConnection();
+
 // connectDB(); //Connects server to MongoDB
 
-app.use(logger) //Writes logs for all request
+app.use(logger); //Writes logs for all request
 
 app.use(credentials);
 
@@ -47,9 +55,19 @@ app.use('/', root);
 
 app.use('/register', registerRouter);
 
-app.use('/openAI', openAIRouter)
+app.use('/openAI', openAIRouter);
 
-app.use('/groqAI', groqAIRouter)
+app.use('/groqAI', groqAIRouter);
+
+app.use('/mysql_register', mySqlRegisterRouter);
+
+app.use('/mysql_auth', mySqlAuthRouter);
+
+app.use('/mysql_logout', mySqlLogutRouter);
+
+app.use('/mysql_ingredients', mySqlIngredientsRouter);
+
+app.use('/mysql_ingredient_types', mySqlIngredientTypesRouter);
 
 // app.use('/auth', require('./routes/auth'));
 
@@ -75,8 +93,8 @@ app.use('/groqAI', groqAIRouter)
 
 // app.use(errorHandler);
 
-app.listen(PORT, '127.0.0.1', () => console.log(`Server running on port ${PORT}`));
-// app.listen(PORT, '192.168.3.91', () => console.log(`Server running on port ${PORT}`));
+// app.listen(PORT, '127.0.0.1', () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, '192.168.3.91', () => console.log(`Server running on port ${PORT}`));
 
 
 

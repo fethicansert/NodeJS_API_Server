@@ -16,6 +16,10 @@ const schema = {
             title: "Recipe",
             description: "A recipe object",
             properties: {
+                id: {
+                    type: 'integer',
+                    description: 'The id of recipe'
+                },
                 recipe_name: {
                     type: "string",
                     title: "Recipe name",
@@ -73,24 +77,31 @@ export const chat = async (req, res) => {
 
     const systemContent = `You are greate chef who creates recipes.
                            The user will enter food ingredients seperated with commas.
-                           You will use these ingredients and create a recipe.
+                           You will use these ingredients and create minimum 3 recipe.
                            Give max 4 ingredients.
                            Output must in JSON using the schema defined here:${jsonSchema}`;
 
-    const chatCompletion = await groq.chat.completions.create({
-        messages: [
-            { role: "system", content: systemContent },
-            { role: "user", content: userContent, },
-        ],
+    try {
+        const chatCompletion = await groq.chat.completions.create({
+            messages: [
+                { role: "system", content: systemContent },
+                { role: "user", content: userContent, },
+            ],
 
-        // response_format: { "type": "text" },
-        response_format: { "type": "json_object" },
-        
-        model: "mixtral-8x7b-32768",
+            // response_format: { "type": "text" },
+            response_format: { "type": "json_object" },
 
-    });
-    const parsedMessage = JSON.parse(chatCompletion.choices[0]?.message?.content);
-    res.json({ message: parsedMessage || "" })
+            model: "mixtral-8x7b-32768",
+
+        });
+        const parsedMessage = JSON.parse(chatCompletion.choices[0]?.message?.content);
+        return res.json({ message: parsedMessage || "" });
+    } catch (e) {
+        console.log(e);
+    }
+
+
+    res.sendStatus(400);
 }
 
 

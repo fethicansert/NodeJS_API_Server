@@ -17,7 +17,7 @@ const handleLogout = async (req, res) => {
     //jwt cookies exist but not founded in DB still delete cookie
     if (!foundUser) {
         res.clearCookie("jwt", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 }); //options should be same
-        res.sendStatus(204);
+        return res.sendStatus(204);
     }
 
     //Delete the refresh token in database

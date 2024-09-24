@@ -46,7 +46,6 @@ const handleAuth = async (req, res) => {
             foundUser.refreshToken = refreshToken;
             const result = await foundUser.save();
 
-            console.log(jwt.decode(accessToken));
             res.cookie("jwt", refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: false }) //we should use { secure: true } in production it only serve cookies on https
             res.json({ accessToken });
         } catch (e) {

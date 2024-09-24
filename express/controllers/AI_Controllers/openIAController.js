@@ -12,7 +12,7 @@ export const chat = async (req, res) => {
     const { userContent } = req.body;
 
     if (!userContent) return res.status(400).json({ message: "No user content recieved" });
-   
+
     const systemContent = `You are a great recipe master. 
                            Prepare a recipe using giving ingredients from user.
                            Please give me the recipe name, ingredients, instructions, cooking time, and serve.`;
@@ -27,7 +27,7 @@ export const chat = async (req, res) => {
         model: "mixtral-8x7b-32768",
 
     });
-   
+
     res.json({ message: chatCompletion.choices[0]?.message?.content || "" })
 }
 
