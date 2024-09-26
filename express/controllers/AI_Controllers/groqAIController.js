@@ -26,23 +26,28 @@ const schema = {
                     description: "The name of recipe"
                 },
                 ingredients: {
-                    type: 'object',
-                    description: "An ingredient used in the recipe",
-                    properties: {
-                        name: {
-                            type: "string",
-                            description: "The name of ingredient"
+                    type: "array",
+                    title: "Ingredient List",
+                    description: "List of ingredients",
+                    items: {
+                        type: 'object',
+                        description: "An ingredient used in the recipe",
+                        properties: {
+                            name: {
+                                type: "string",
+                                description: "The name of ingredient"
+                            },
+                            quantity: {
+                                type: "string",
+                                description: "The qunatity of ingredient",
+                            },
+                            quantity_unit: {
+                                type: "string",
+                                description: "The qunatity unit of ingredient"
+                            }
                         },
-                        quantity: {
-                            type: "string",
-                            description: "The qunatity of ingredient",
-                        },
-                        quantity_unit: {
-                            type: "string",
-                            description: "The qunatity unit of ingredient"
-                        }
-                    },
-                    required: ["name", "quantity", "quantity_unit"]
+                        required: ["name", "quantity", "quantity_unit"]
+                    }
                 },
                 instructions: {
                     type: "array",

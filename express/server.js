@@ -18,6 +18,7 @@ import openAIRouter from './routes/api/openAI.js';
 import groqAIRouter from './routes/api/groqAI.js';
 
 import createMySqlConnection from './config/mySqlConn.js';
+
 import mySqlRegisterRouter from './routes/mysql/mySqlRegisterRouter.js';
 import mySqlAuthRouter from './routes/mysql/mySqlAuthRouter.js';
 import mySqlLogutRouter from './routes/mysql/mySqlLogutRouter.js';
@@ -25,7 +26,6 @@ import mySqlIngredientsRouter from './routes/mysql/mySqlIngredientsRouter.js';
 import mySqlIngredientTypesRouter from './routes/mysql/mySqlIngredietnTypesRouter.js'
 
 const app = express();
-
 
 const PORT = process.env.PORT || 3166;
 
