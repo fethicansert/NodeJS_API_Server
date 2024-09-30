@@ -12,22 +12,19 @@ const logout = async (req, res) => {
     const refreshToken = cookies.jwt_refresh;
 
     const decoded = jwt.decode(refreshToken);
+    console.log(decoded);
 
     try {
 
         const [result] = await db.query("SELECT * FROM USERS WHERE username = ?", [decoded.username]);
 
-        if (!result.length) {
-            res.clearCookie("jwt_refresh", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-            return res.sendStatus(204);
-        }
-
+        if (!result.length) return res.status(400).json({ error: "username not matching!!!" });
 
         res.clearCookie("jwt_refresh", { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
-        res.status(200).json({ message: `${result[0]?.username} logut.` });
-
+        return res.sendStatus(204);
 
     } catch (e) {
+        res.sendStatus(500);
         console.log(e);
     }
 

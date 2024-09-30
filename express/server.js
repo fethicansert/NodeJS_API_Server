@@ -24,6 +24,7 @@ import mySqlAuthRouter from './routes/mysql/mySqlAuthRouter.js';
 import mySqlLogutRouter from './routes/mysql/mySqlLogutRouter.js';
 import mySqlIngredientsRouter from './routes/mysql/mySqlIngredientsRouter.js';
 import mySqlIngredientTypesRouter from './routes/mysql/mySqlIngredietnTypesRouter.js'
+import mySqlRecipeRouter from './routes/mysql/mySqlRecipeRouter.js'
 
 const app = express();
 
@@ -68,6 +69,8 @@ app.use('/mysql_logout', mySqlLogutRouter);
 app.use('/mysql_ingredients', mySqlIngredientsRouter);
 
 app.use('/mysql_ingredient_types', mySqlIngredientTypesRouter);
+
+app.use('/mysql_recipe', mySqlRecipeRouter);
 
 // app.use('/auth', require('./routes/auth'));
 

@@ -83,7 +83,6 @@ export const chat = async (req, res) => {
     const systemContent = `You are greate chef who creates recipes.
                            The user will enter food ingredients seperated with commas.
                            You will use these ingredients and create minimum 3 recipe.
-                           Give max 4 ingredients.
                            Output must in JSON using the schema defined here:${jsonSchema}`;
 
     try {

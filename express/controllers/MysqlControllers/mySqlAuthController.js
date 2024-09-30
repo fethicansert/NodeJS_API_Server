@@ -17,14 +17,15 @@ const auth = async (req, res) => {
         const compare = await bcrypt.compare(password, userResult[0].password);
         if (!compare) return res.status(403).json({ error: "Incorrect Password !" });
 
-        const payload = { username };
+
+        const payload = { id: userResult[0].id, username: userResult[0].username };
 
         const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "5m" });
 
         const refreshToken = jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "10d" });
 
         const x = res.cookie("jwt_refresh", refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: false })
-        console.log(x);
+
         res.status(200).json({ token: accessToken });
     } catch (e) {
         console.log(e);
