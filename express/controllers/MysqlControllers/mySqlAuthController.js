@@ -11,13 +11,19 @@ const auth = async (req, res) => {
     if (!username || !password) return res.status(400).json({ message: "Something missing !" });
 
     try {
+
+        //check if user exist
         const [userResult] = await db.query("SELECT * FROM USERS WHERE username = ?", [username]);
         if (!userResult.length) return res.status(403).json({ error: "Incorrect Username !" });
 
-        const compare = await bcrypt.compare(password, userResult[0].password);
+        //get user password from passwords table
+        const [passwordResult] = await db.query("SELECT * FROM passwords WHERE user_id = ?", [userResult[0].id]);
+
+        //copmare request password and user password
+        const compare = await bcrypt.compare(password, passwordResult[0].password);
         if (!compare) return res.status(403).json({ error: "Incorrect Password !" });
 
-
+        //if password valid thans create jwt
         const payload = { id: userResult[0].id, username: userResult[0].username };
 
         const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "5m" });

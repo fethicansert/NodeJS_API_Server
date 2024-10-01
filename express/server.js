@@ -14,17 +14,17 @@ import connectDB from './config/dbConn.js';
 import registerRouter from './routes/register.js';
 import root from './routes/root.js';
 
-import openAIRouter from './routes/api/openAI.js';
-import groqAIRouter from './routes/api/groqAI.js';
+import openAIRouter from './routes/ai-routes/openAI.js';
+import groqAIRouter from './routes/ai-routes/groqAI.js';
 
 import createMySqlConnection from './config/mySqlConn.js';
 
-import mySqlRegisterRouter from './routes/mysql/mySqlRegisterRouter.js';
-import mySqlAuthRouter from './routes/mysql/mySqlAuthRouter.js';
-import mySqlLogutRouter from './routes/mysql/mySqlLogutRouter.js';
-import mySqlIngredientsRouter from './routes/mysql/mySqlIngredientsRouter.js';
-import mySqlIngredientTypesRouter from './routes/mysql/mySqlIngredietnTypesRouter.js'
-import mySqlRecipeRouter from './routes/mysql/mySqlRecipeRouter.js'
+import mySqlRegisterRouter from './routes/mysql-routes/mySqlRegisterRouter.js';
+import mySqlAuthRouter from './routes/mysql-routes/mySqlAuthRouter.js';
+import mySqlLogutRouter from './routes/mysql-routes/mySqlLogutRouter.js';
+import mySqlIngredientsRouter from './routes/mysql-routes/mySqlIngredientsRouter.js';
+import mySqlIngredientTypesRouter from './routes/mysql-routes/mySqlIngredietnTypesRouter.js'
+import mySqlRecipeRouter from './routes/mysql-routes/mySqlRecipeRouter.js'
 
 const app = express();
 

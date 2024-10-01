@@ -13,8 +13,20 @@ export const register = async (req, res) => {
         const [emailResult] = await db.query("SELECT email FROM USERS WHERE email = ?", [email]);
         if (emailResult.length) return res.status(409).json({ error: "The email has already taken" })
 
+
+        const [insertResult] = await db.query("INSERT INTO USERS SET ?", { username, email });
+
+        if (!insertResult.affectedRows) return res.status(500).json({ error: "Server error !" });
+
+
         const hashedPassword = await bcrypt.hash(password, 8);
-        const [insertResult] = await db.query("INSERT INTO USERS SET ?", { username, email, password: hashedPassword });
+
+        const [insertPassword] = await db.query("INSERT INTO passwords SET ?", { user_id: insertResult.insertId, password: hashedPassword });
+
+        console.log(insertPassword);
+        console.log(insertResult);
+
+
 
         return res.status(201).json({ message: insertResult.insertId });
 

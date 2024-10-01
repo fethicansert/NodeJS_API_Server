@@ -1,4 +1,4 @@
-import createMySqlConnection from "../config/mySqlConn";
+import createMySqlConnection from "../../config/mySqlConn";
 
 const db = await createMySqlConnection();
 

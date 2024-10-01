@@ -1,4 +1,4 @@
-const TrafficSingQuestion = require('../model/TrafficSingQuestion');
+const TrafficSingQuestion = require('../../model/TrafficSingQuestion');
 
 const getAllTrafficSignQuestions = async (req, res) => {
 

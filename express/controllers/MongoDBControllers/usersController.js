@@ -1,5 +1,5 @@
-const User = require('../model/User');
-const TrafficSingQuestion = require('../model/TrafficSingQuestion');
+const User = require('../../model/User');
+const TrafficSingQuestion = require('../../model/TrafficSingQuestion');
 
 const getAllUsers = async (req, res) => {
     try {
@@ -52,7 +52,7 @@ const getUserQuestions = async (req, res) => {
         const questionIds = foundUser.questions;
         // let quesitons = [];
 
-        const userQuestions = await TrafficSingQuestion.find({ _id : { $in: questionIds }}).exec();
+        const userQuestions = await TrafficSingQuestion.find({ _id: { $in: questionIds } }).exec();
         res.json(userQuestions);
 
     } catch (err) {
