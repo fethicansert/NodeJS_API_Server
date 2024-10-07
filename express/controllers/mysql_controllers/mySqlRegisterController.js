@@ -23,9 +23,6 @@ export const register = async (req, res) => {
 
         const [insertPassword] = await db.query("INSERT INTO passwords SET ?", { user_id: insertResult.insertId, password: hashedPassword });
 
-        console.log(insertPassword);
-        console.log(insertResult);
-
 
 
         return res.status(201).json({ message: insertResult.insertId });

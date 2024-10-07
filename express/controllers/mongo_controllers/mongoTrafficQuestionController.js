@@ -1,4 +1,4 @@
-const TrafficSingQuestion = require('../../model/TrafficSingQuestion');
+import TrafficSingQuestion from '../../model/TrafficSingQuestion.js'
 
 const getAllTrafficSignQuestions = async (req, res) => {
 
@@ -67,7 +67,7 @@ const createTraffinSingQuestion = async (req, res) => {
     }
 }
 
-module.exports = {
+export default {
     getAllTrafficSignQuestions,
     createTraffinSingQuestion,
     getTrafficSignQuestions

@@ -1,5 +1,5 @@
 import express from "express";
-import mySqlIngredientsController from "../../controllers/MysqlControllers/mySqlIngredientsController.js";
+import mySqlIngredientsController from "../../controllers/mysql_controllers/mySqlIngredientsController.js";
 
 const router = express.Router();
 

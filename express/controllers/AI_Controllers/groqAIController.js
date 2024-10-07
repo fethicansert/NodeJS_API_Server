@@ -96,6 +96,7 @@ export const chat = async (req, res) => {
             response_format: { "type": "json_object" },
 
             model: "mixtral-8x7b-32768",
+            // model: 'gemma2-9b-it'
 
         });
         const parsedMessage = JSON.parse(chatCompletion.choices[0]?.message?.content);

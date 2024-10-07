@@ -1,5 +1,5 @@
 import express from "express";
-import logout from "../../controllers/MysqlControllers/mySqlLogoutController.js";
+import logout from "../../controllers/mysql_controllers/mySqlLogoutController.js";
 
 const router = express.Router();
 

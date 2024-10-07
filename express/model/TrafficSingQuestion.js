@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import { Schema as _Schema, model } from 'mongoose';
+const Schema = _Schema;
 
 
 //My shcema => 
@@ -30,6 +30,6 @@ const traficSingQuestionShema = new Schema({
     }
 });
 
-required: true
 
-module.exports = mongoose.model('TrafficSignQuestion', traficSingQuestionShema);
+
+export default model('TrafficSignQuestion', traficSingQuestionShema);

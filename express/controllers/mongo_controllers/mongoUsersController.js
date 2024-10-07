@@ -1,5 +1,5 @@
-const User = require('../../model/User');
-const TrafficSingQuestion = require('../../model/TrafficSingQuestion');
+import User from '../../model/User.js';
+import TrafficSingQuestion from '../../model/TrafficSingQuestion.js'
 
 const getAllUsers = async (req, res) => {
     try {
@@ -65,4 +65,4 @@ const getUserQuestions = async (req, res) => {
 
 
 
-module.exports = { getAllUsers, addQuestion, getUserQuestions }
+export default { getAllUsers, addQuestion, getUserQuestions }

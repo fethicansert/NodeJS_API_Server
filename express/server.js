@@ -1,4 +1,5 @@
 import dotenv from 'dotenv'
+import mongoose from 'mongoose';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import express, { urlencoded, json, static as static_ } from 'express';
@@ -8,35 +9,45 @@ import corsOptions from './config/corsOptions.js';
 import credentials from './middleware/credentials.js';
 import errorHandler from './middleware/errorHandler.js';
 import notFoundHandler from './middleware/notFoundHandler.js';
-import verifyJWT from './middleware/veriyfJWT.js';
+
 import cookieParser from 'cookie-parser';
+
 import connectDB from './config/dbConn.js';
-import registerRouter from './routes/register.js';
+import verifyJWT from './middleware/veriyfJWT.js';
+
+
+import mongoRegisterRouter from './routes/register.js';
+
 import root from './routes/root.js';
 
 import openAIRouter from './routes/ai-routes/openAI.js';
 import groqAIRouter from './routes/ai-routes/groqAI.js';
 
 import createMySqlConnection from './config/mySqlConn.js';
-
 import mySqlRegisterRouter from './routes/mysql-routes/mySqlRegisterRouter.js';
 import mySqlAuthRouter from './routes/mysql-routes/mySqlAuthRouter.js';
 import mySqlLogutRouter from './routes/mysql-routes/mySqlLogutRouter.js';
 import mySqlIngredientsRouter from './routes/mysql-routes/mySqlIngredientsRouter.js';
-import mySqlIngredientTypesRouter from './routes/mysql-routes/mySqlIngredietnTypesRouter.js'
-import mySqlRecipeRouter from './routes/mysql-routes/mySqlRecipeRouter.js'
+import mySqlIngredientTypesRouter from './routes/mysql-routes/mySqlIngredietnTypesRouter.js';
+import mySqlRecipeRouter from './routes/mysql-routes/mySqlRecipeRouter.js';
 
-const app = express();
+import mongoTrafficQuestionRouter from './routes/mongo-routes/mongoTrafficQuestionRouter.js';
+import mongoUsersRouter from './routes/mongo-routes/mongoUsersRouter.js';
 
-const PORT = process.env.PORT || 3166;
+
+
+//SERVER CONFIGURATIONS
+const app = express(); //creates express app
+
+const PORT = process.env.PORT || 3166; //set PORT
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 dotenv.config(); //Loads `.env` file contents into process.env.
 
-createMySqlConnection();
+createMySqlConnection(); //Connects server to MySqlDB
 
-// connectDB(); //Connects server to MongoDB
+connectDB(); //Connects server to MongoDB
 
 app.use(logger); //Writes logs for all request
 
@@ -50,29 +61,47 @@ app.use(json()); //serve json files => parses request body
 
 app.use(cookieParser()); //Parse to Cookie
 
+
+//WEB SERVER
 app.use('/', static_(join(__dirname, 'public'))); // serve static files like css image and javascript 
 
-app.use('/', root);
+app.use('/', root); //serves root file index.html
 
-app.use('/register', registerRouter);
 
-app.use('/openAI', openAIRouter);
+//MONGO
+app.use('/register', mongoRegisterRouter); //Mondoregister
 
-app.use('/groqAI', groqAIRouter);
+app.use('/auth', mongoUsersRouter); //Mongo auth
 
-app.use('/mysql_register', mySqlRegisterRouter);
+app.use('/traffic-sign-question', mongoTrafficQuestionRouter); //Mongo get traffic sing questions
 
-app.use('/mysql_auth', mySqlAuthRouter);
 
-app.use('/mysql_logout', mySqlLogutRouter);
+//AI
+app.use('/openAI', openAIRouter); //openAI route
 
-app.use('/mysql_ingredients', mySqlIngredientsRouter);
+app.use('/groqAI', groqAIRouter); //grogAI route
 
-app.use('/mysql_ingredient_types', mySqlIngredientTypesRouter);
 
-app.use('/mysql_recipe', mySqlRecipeRouter);
+//MYSQL
+app.use('/mysql_register', mySqlRegisterRouter); //MySql register - add user
 
-// app.use('/auth', require('./routes/auth'));
+app.use('/mysql_auth', mySqlAuthRouter); //MySql auth - login user
+
+app.use('/mysql_logout', mySqlLogutRouter); //MySql logut
+
+app.use('/mysql_ingredients', mySqlIngredientsRouter); //MySql get ingredients
+
+app.use('/mysql_ingredient_types', mySqlIngredientTypesRouter); //Mysql get ingredient types
+
+app.use('/mysql_recipe', mySqlRecipeRouter); //Mysql get user recipe CRUD opeations
+
+
+mongoose.connection.once('open', () => {
+    console.log("Connected to MongoDB");
+    app.listen(PORT, '192.168.3.91', () => console.log(`Server running on port ${PORT}`));
+})
+
+
 
 // //refresh access token
 // app.use('/refresh', require('./routes/refresh'));
@@ -88,7 +117,7 @@ app.use('/mysql_recipe', mySqlRecipeRouter);
 // app.use('/employees', verifyJWT, require('./routes/api/employees'));
 
 // //routing request coming to 'www.domain.com/traffic-signs' API
-// app.use('/traffic-sign-question', require('./routes/api/trafficSignQuestion'));
+
 
 // //we use .all instead .use beaucse .all for routing and  for all methods(get,post,put and delete)
 // //checks all type of requsts if request url not macth to routers send '404 Not Found '
@@ -96,17 +125,14 @@ app.use('/mysql_recipe', mySqlRecipeRouter);
 
 // app.use(errorHandler);
 
-// app.listen(PORT, '127.0.0.1', () => console.log(`Server running on port ${PORT}`));
-app.listen(PORT, '192.168.3.91', () => console.log(`Server running on port ${PORT}`));
-
-
-
 // //if connected to mongoDB than we start to listen request on server === > once yani bir kez dinle on olsa hep dinleyecek
 // mongoose.connection.once('open', () => {
 //     console.log("Connected to MongoDB");
 //     app.listen(PORT ,'127.0.0.1',() => console.log(`Server running on port ${PORT}`));
 // })
 
+
+///////
 //? What happend if requested file not found ?
 //Expres send html file with <p>Cannot GET /"requestede file name"</p>
 
