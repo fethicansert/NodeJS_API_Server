@@ -1,7 +1,7 @@
-import dotenv from 'dotenv'
-import mongoose from 'mongoose';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv'
+import mongoose from 'mongoose';
 import express, { urlencoded, json, static as static_ } from 'express';
 import cors from 'cors';
 import { logger } from './middleware/logEvents.js';
@@ -14,9 +14,6 @@ import cookieParser from 'cookie-parser';
 
 import connectDB from './config/dbConn.js';
 import verifyJWT from './middleware/veriyfJWT.js';
-
-
-import mongoRegisterRouter from './routes/register.js';
 
 import root from './routes/root.js';
 
@@ -32,8 +29,9 @@ import mySqlIngredientTypesRouter from './routes/mysql-routes/mySqlIngredietnTyp
 import mySqlRecipeRouter from './routes/mysql-routes/mySqlRecipeRouter.js';
 
 import mongoTrafficQuestionRouter from './routes/mongo-routes/mongoTrafficQuestionRouter.js';
-import mongoUsersRouter from './routes/mongo-routes/mongoUsersRouter.js';
-
+import mongoUserQuestionsRouter from './routes/mongo-routes/mongoUsersQuestionsRouter.js';
+import mongoRegisterRouter from './routes/register.js';
+import mongoAuthRouter from './routes/mongo-routes/mongoAuthRouter.js'
 
 
 //SERVER CONFIGURATIONS
@@ -71,15 +69,16 @@ app.use('/', root); //serves root file index.html
 //MONGO
 app.use('/register', mongoRegisterRouter); //Mondoregister
 
-app.use('/auth', mongoUsersRouter); //Mongo auth
+app.use('/auth', mongoAuthRouter); //Mongo auth
 
 app.use('/traffic-sign-question', mongoTrafficQuestionRouter); //Mongo get traffic sing questions
 
+app.use('/user_questions', mongoUserQuestionsRouter);
 
 //AI
-app.use('/openAI', openAIRouter); //openAI route
+app.use('/openAI', verifyJWT, openAIRouter); //openAI route
 
-app.use('/groqAI', groqAIRouter); //grogAI route
+app.use('/groqAI', verifyJWT, groqAIRouter); //grogAI route
 
 
 //MYSQL
@@ -110,7 +109,7 @@ mongoose.connection.once('open', () => {
 // app.use('/logout', require('./routes/logout'));
 
 // //Deneme amacli verifyJWT kaldirdim
-// app.use('/users', require('./routes/api/users'));
+
 
 
 // //routing request coming to 'www.domain.com/employees' API
@@ -124,12 +123,6 @@ mongoose.connection.once('open', () => {
 // app.all('*', notFoundHandler);
 
 // app.use(errorHandler);
-
-// //if connected to mongoDB than we start to listen request on server === > once yani bir kez dinle on olsa hep dinleyecek
-// mongoose.connection.once('open', () => {
-//     console.log("Connected to MongoDB");
-//     app.listen(PORT ,'127.0.0.1',() => console.log(`Server running on port ${PORT}`));
-// })
 
 
 ///////

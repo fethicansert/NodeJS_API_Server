@@ -1,4 +1,4 @@
-import mongoUsersController from '../../controllers/mongo_controllers/mongoUsersController.js';
+import mongoUsersController from '../../controllers/mongo_controllers/mongoUserQuestionsController.js';
 import { Router } from 'express';
 const router = Router();
 
