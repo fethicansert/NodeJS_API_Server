@@ -27,11 +27,13 @@ import mySqlLogutRouter from './routes/mysql-routes/mySqlLogutRouter.js';
 import mySqlIngredientsRouter from './routes/mysql-routes/mySqlIngredientsRouter.js';
 import mySqlIngredientTypesRouter from './routes/mysql-routes/mySqlIngredietnTypesRouter.js';
 import mySqlRecipeRouter from './routes/mysql-routes/mySqlRecipeRouter.js';
+import mySqlUserRouter from './routes/mysql-routes/mySqlUserRouter.js';
 
 import mongoTrafficQuestionRouter from './routes/mongo-routes/mongoTrafficQuestionRouter.js';
 import mongoUserQuestionsRouter from './routes/mongo-routes/mongoUsersQuestionsRouter.js';
 import mongoRegisterRouter from './routes/register.js';
-import mongoAuthRouter from './routes/mongo-routes/mongoAuthRouter.js'
+import mongoAuthRouter from './routes/mongo-routes/mongoAuthRouter.js';
+
 
 
 //SERVER CONFIGURATIONS
@@ -78,7 +80,7 @@ app.use('/user_questions', mongoUserQuestionsRouter);
 //AI
 app.use('/openAI', verifyJWT, openAIRouter); //openAI route
 
-app.use('/groqAI', verifyJWT, groqAIRouter); //grogAI route
+app.use('/groqAI', groqAIRouter); //grogAI route
 
 
 //MYSQL
@@ -93,6 +95,8 @@ app.use('/mysql_ingredients', mySqlIngredientsRouter); //MySql get ingredients
 app.use('/mysql_ingredient_types', mySqlIngredientTypesRouter); //Mysql get ingredient types
 
 app.use('/mysql_recipe', mySqlRecipeRouter); //Mysql get user recipe CRUD opeations
+
+app.use('/mysql_users', mySqlUserRouter);
 
 
 mongoose.connection.once('open', () => {
